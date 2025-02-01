@@ -1,48 +1,56 @@
 import java.util.Scanner;
 
 public class Main {
-	public static boolean ask(String question) {
+	public static int ask(String question, String ... answers) {
 		Scanner console = new Scanner(System.in);
 		System.out.println(question);
-		System.out.println("1. Да");
-		System.out.println("2. Нет");
+		if(answers.length < 2) {
+			answers = new String[] {"Да", "Нет"};
+		}
+		int i = 0;
+		while(i < answers.length) {
+			System.out.printf("%d. %s\n", i + 1, answers[i]);
+			i++;
+		}
 		System.out.print("> ");
 		int choice = console.nextInt();
-		if(choice != 1 && choice != 2) {
-			throw new RuntimeException("Введено неверное число (ожидалось 1 или 2)");
+		if(choice < 1 || choice > answers.length) {
+			throw new RuntimeException("Введено неверное число (ожидалось значение между 1 и " + answers.length + ")");
 		}
-		return choice == 1;
+		return choice;
 	}
 
 	public static void main(String[] args) {
-		boolean yesAnswer;
-		yesAnswer = ask("Хотите ли Вы быть всегда в гуще сражения?");
-		if(yesAnswer) {
+		int answer;
+		answer = ask("Хотите ли Вы быть всегда в гуще сражения?");
+		if(answer == 1) {
 			// персонаж ближнего боя
-			yesAnswer = ask("Предпочитаете защиту?");
-			if(yesAnswer) {
+			answer = ask("Предпочитаете защиту?");
+			if(answer == 1) {
 				System.out.println("Ваш класс - гном");
 			} else {
 				System.out.println("Ваш класс - варвар");
 			}
 		} else {
 			// персонаж дальнего боя
-			yesAnswer = ask("Предпочитаете оказывать поддержку?");
-			if(yesAnswer) {
+			answer = ask("Предпочитаете оказывать поддержку?");
+			if(answer == 1) {
 				// персонаж поддержки
-				yesAnswer = ask("Вы вредный?");
-				if(yesAnswer) {
+				answer = ask("Вы вредный?");
+				if(answer == 1) {
 					System.out.println("Ваш класс - шаман");
 				} else {
 					System.out.println("Ваш класс - друид");
 				}
 			} else {
 				// персонаж дальнего урона
-				yesAnswer = ask("Любите магию?");
-				if(yesAnswer) {
+				answer = ask("Любите использовать магию?", "Да", "Иногда", "Нет");
+				if(answer == 1) {
 					System.out.println("Ваш класс - маг");
-				} else {
+				} else if(answer == 2) {
 					System.out.println("Ваш класс - эльф");
+				} else {
+					System.out.println("Ваш класс - амазонка");
 				}
 			}
 		}
